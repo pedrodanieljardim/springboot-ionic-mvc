@@ -1,10 +1,13 @@
 package com.br.pedro.backend.controllers;
 
 import com.br.pedro.backend.domains.Category;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.br.pedro.backend.services.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,16 +15,37 @@ import java.util.List;
 @RequestMapping("/api/category")
 public class CategoryController {
 
+    @Autowired
+    CategoryService categoryService;
+
     @GetMapping
-    public List<Category> allCategories(){
-        Category c1 = new Category(1L, "Informática");
-        Category c2 = new Category(2L, "Escritório");
+    public List<Category> findAllCategories(){
+        return categoryService.findAll();
+    }
 
-        List<Category> categoryList = new ArrayList<>();
-        categoryList.add(c1);
-        categoryList.add(c2);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Category> findCategoryById(@PathVariable("id") Long categoryId){
+        return ResponseEntity.ok().body(categoryService.searchCategoryById(categoryId));
+    }
 
-        return categoryList;
+    @PostMapping
+    public ResponseEntity<?> createCategory(@RequestBody Category category){
+        Category newCategory = categoryService.createCategory(category);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newCategory.getId())
+                .toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Void> updateCategory(@PathVariable("id") Long categoryId, @RequestBody Category category){
+        categoryService.updateCategory(categoryId, category);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable("id") Long categoryId){
+        categoryService.removeCategory(categoryId);
+        return ResponseEntity.noContent().build();
     }
 
 }
