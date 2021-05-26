@@ -1,6 +1,6 @@
 package com.br.pedro.backend.controllers;
 
-import com.br.pedro.backend.domain.Category;
+import com.br.pedro.backend.domains.Category;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,4 +1,4 @@
-package com.br.pedro.backend.domain;
+package com.br.pedro.backend.domains;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
