@@ -6,13 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-// @Table(name = "category")
+@Table(name = "category")
 public class Category {
 
     @Id
@@ -21,4 +23,10 @@ public class Category {
 
     @Column(name = "name")
     private String name;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "prd_category",
+    joinColumns = @JoinColumn(name = "product_id"),
+    inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<Product> productList = new ArrayList<>();
 }
