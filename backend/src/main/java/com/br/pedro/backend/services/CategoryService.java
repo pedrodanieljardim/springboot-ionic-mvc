@@ -1,6 +1,7 @@
 package com.br.pedro.backend.services;
 
 import com.br.pedro.backend.domains.Category;
+import com.br.pedro.backend.exceptions.ObjectNotFoundException;
 import com.br.pedro.backend.repositories.CategoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category searchCategoryById(Long id){
-        return categoryRepository.findById(id).orElse(null);
+    public Category searchCategoryById(Long id) {
+        return categoryRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Categoria não encontrada pelo Id!"));
     }
 
     public Category createCategory(Category category){
@@ -28,12 +29,13 @@ public class CategoryService {
     }
 
     public Category updateCategory(Long idCategory, Category newCategory){
-        Category oldCategory = categoryRepository.findById(idCategory).get();
+        Category oldCategory = categoryRepository.findById(idCategory).orElseThrow(() -> new ObjectNotFoundException("Categoria não encontrada pelo Id!"));
         oldCategory.setName(newCategory.getName());
         return categoryRepository.save(oldCategory);
     }
 
     public void removeCategory(Long idCategory){
+        Category deletedCategory = categoryRepository.findById(idCategory).orElseThrow(() -> new ObjectNotFoundException("Categoria não encontrada pelo Id!"));
         categoryRepository.deleteById(idCategory);
     }
 

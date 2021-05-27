@@ -1,5 +1,6 @@
 package com.br.pedro.backend.domains;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,7 +27,8 @@ public class Product {
     @Column(name = "price")
     private Double price;
 
-    @ManyToMany(mappedBy = "productList", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "productList", fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<Category> categoryList = new ArrayList<>();
 
 
