@@ -1,4 +1,4 @@
-package com.br.pedro.backend.services;
+package com.br.pedro.backend.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
