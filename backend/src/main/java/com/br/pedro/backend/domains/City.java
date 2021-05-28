@@ -1,8 +1,11 @@
 package com.br.pedro.backend.domains;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,6 +21,10 @@ public class City {
 
     @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Adress> adressList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "state_id")
