@@ -1,5 +1,7 @@
 package com.br.pedro.backend.domains;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,11 +34,13 @@ public class Adress {
     @Column(name = "adress_code")
     private String adressCode;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "client_id")
     private Client client;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "city_id")
     private City city;
 }

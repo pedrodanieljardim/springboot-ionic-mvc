@@ -1,5 +1,6 @@
 package com.br.pedro.backend.domains;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -25,7 +26,7 @@ public class State {
     private String name;
 
     @OneToMany(mappedBy = "state", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonBackReference
     private List<City> cities = new ArrayList<>();
 
 }

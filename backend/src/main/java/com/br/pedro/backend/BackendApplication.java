@@ -53,10 +53,10 @@ public class BackendApplication implements CommandLineRunner {
         City c3 = City.builder().name("São Paulo").state(s2).build();
         City c4 = City.builder().name("Campinas").state(s2).build();
 
-        Client cl1 = Client.builder().document("14789654102").typeClient(TypeClient.PESSOA_FISICA.getCode()).contactCell("3130448798").name("Pedro Van Der Saar").email("pedro.saar@gmail.com").build();
+        Client cl1 = Client.builder().document("14789654102").typeClient(TypeClient.PESSOA_FISICA.getCode()).contactCell("3130448798").contactPhone("31998756589").name("Pedro Van Der Saar").email("pedro.saar@gmail.com").build();
 
-        Adress ad1 = Adress.builder().adressCode("36587052").street("Rua das Oliveiras").number("32").client(cl1).city(c1).build();
-        Adress ad2 = Adress.builder().adressCode("987235").street("Rua das Palneiras").number("2123").client(cl1).city(c1).build();
+        Adress ad1 = Adress.builder().adressCode("36587052").street("Rua das Oliveiras").neighborhood("Bairro das Oliveiras").number("32").client(cl1).city(c1).build();
+        Adress ad2 = Adress.builder().adressCode("987235").street("Rua das Palmeiras").neighborhood("Bairro das Palmeiras").number("2123").client(cl1).city(c1).build();
 
         cl1.setAdressList(Arrays.asList(ad1, ad2));
 
@@ -69,7 +69,7 @@ public class BackendApplication implements CommandLineRunner {
         p1.setCategoryList(Arrays.asList(cat1));
         p2.setCategoryList(Arrays.asList(cat1, cat2));
         p3.setCategoryList(Arrays.asList(cat1));
-        
+
         stateRepository.saveAll(Arrays.asList(s1, s2));
         cityRepository.saveAll(Arrays.asList(c1, c2, c3, c4));
         productRepository.saveAll(Arrays.asList(p1, p2, p3));
