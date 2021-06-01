@@ -1,6 +1,7 @@
 package com.br.pedro.backend;
 
 import com.br.pedro.backend.domains.*;
+import com.br.pedro.backend.enums.StatePayment;
 import com.br.pedro.backend.enums.TypeClient;
 import com.br.pedro.backend.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -30,6 +32,12 @@ public class BackendApplication implements CommandLineRunner {
 
     @Autowired
     ClientRepository clientRepository;
+
+    @Autowired
+    OrderRepository orderRepository;
+
+    @Autowired
+    PaymentRepository paymentRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
@@ -57,7 +65,6 @@ public class BackendApplication implements CommandLineRunner {
 
         Adress ad1 = Adress.builder().adressCode("36587052").street("Rua das Oliveiras").neighborhood("Bairro das Oliveiras").number("32").client(cl1).city(c1).build();
         Adress ad2 = Adress.builder().adressCode("987235").street("Rua das Palmeiras").neighborhood("Bairro das Palmeiras").number("2123").client(cl1).city(c1).build();
-
         cl1.setAdressList(Arrays.asList(ad1, ad2));
 
         s1.setCities(Arrays.asList(c1, c2));
@@ -77,5 +84,26 @@ public class BackendApplication implements CommandLineRunner {
         productRepository.saveAll(Arrays.asList(p1, p2, p3));
         clientRepository.save(cl1);
         adressRepository.saveAll(Arrays.asList(ad1, ad2));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+        Order or1 = Order.builder().instant(sdf.parse("31/05/2021 20:58")).client(cl1).adressOrder(ad1).build();
+        Order or2 = Order.builder().instant(sdf.parse("31/05/2021 20:58")).client(cl1).adressOrder(ad2).build();
+
+        Payment pay1 = CreditCardPayment.builder().splitPrice(6).build();
+        pay1.setOrder(or1);
+        pay1.setStatePayment(StatePayment.QUITADO.getCode());
+
+        Payment pay2 = CashPayment.builder().payDay(sdf.parse("31/05/2021 20:58")).dueDate(sdf.parse("31/05/2021 20:58")).build();
+        pay2.setOrder(or2);
+        pay2.setStatePayment(StatePayment.QUITADO.getCode());
+
+        or1.setPayment(pay1);
+        or2.setPayment(pay1);
+
+        cl1.setOrdersList(Arrays.asList(or1, or2));
+
+        orderRepository.saveAll(Arrays.asList(or1, or2));
+        paymentRepository.saveAll(Arrays.asList(pay1, pay2));
     }
 }

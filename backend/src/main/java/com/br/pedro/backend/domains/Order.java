@@ -1,36 +1,32 @@
 package com.br.pedro.backend.domains;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import java.util.List;
-
+import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Getter
 @Setter
 @Builder
-@Table(name = "adress")
-public class Adress {
-
+@Table(name = "orders")
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "street")
-    private String street;
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm")
+    private Date instant;
 
-    @Column(name = "number")
-    private String number;
 
-    @Column(name = "neighborhood")
-    private String neighborhood;
-
-    @Column(name = "adress_code")
-    private String adressCode;
+    @OneToOne(cascade=CascadeType.ALL, mappedBy = "order")
+    @JsonManagedReference
+    private Payment payment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
@@ -38,7 +34,7 @@ public class Adress {
     private Client client;
 
     @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "city_id")
-    private City city;
+    @JsonBackReference
+    @JoinColumn(name = "adress_id")
+    private Adress adressOrder;
 }
